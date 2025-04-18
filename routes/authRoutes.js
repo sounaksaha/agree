@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.post('/register', validateRegistration, registerAdmin);
 router.post('/login', validateLogin, loginAdmin);
-router.get('/profiles', passport.authenticate('jwt', { session: false }), authorizeRoles('admin'), getProfile);
+router.get('/profile', passport.authenticate('jwt', { session: false }), authorizeRoles('admin'), getProfile);
 
 export default router;
