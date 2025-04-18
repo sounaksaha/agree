@@ -1,6 +1,6 @@
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import dotenv from 'dotenv';
-import Admin from '../model/admin.js';
+import Auth from '../model/auth.js';
 dotenv.config();
 
 const passportConfig = (passport) => {
@@ -12,8 +12,8 @@ const passportConfig = (passport) => {
   passport.use(
     new JwtStrategy(opts, async (jwt_payload, done) => {
       try {
-        const admin = await Admin.findById(jwt_payload.id).select('-password');
-        if (admin) return done(null, admin);
+        const auth = await Auth.findById(jwt_payload.id).select('-password');
+        if (auth) return done(null, auth);
         return done(null, false);
       } catch (err) {
         return done(err, false);

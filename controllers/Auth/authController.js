@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
-import Admin from "../../model/admin.js";
+import Auth from "../../model/auth.js";
 import { ApiResponse } from "../../utils/ApiResponse.js";
 export const registerAdmin = async (req, res) => {
   try {
     const { email, password, role } = req.body;
 
-    const existingAdmin = await Admin.findOne({ email });
+    const existingAdmin = await Auth.findOne({ email });
     if (existingAdmin)
       return res.status(400).json(new ApiResponse(400, "Admin already exists"));
 
-    const newAdmin = new Admin({ email, password, role });
+    const newAdmin = new Auth({ email, password, role });
     await newAdmin.save();
 
     res
@@ -20,21 +20,21 @@ export const registerAdmin = async (req, res) => {
   }
 };
 
-export const loginAdmin = async (req, res) => {
+export const login= async (req, res) => {
   const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
-  if (!admin || !(await admin.matchPassword(password))) {
+  const auth = await Auth.findOne({ email });
+  if (!auth || !(await auth.matchPassword(password))) {
     return res.status(401).json(new ApiResponse(401, "Invalid credentials"));
   }
 
-  const payload = { id: admin._id, role: admin.role };
+  const payload = { id: auth._id, role: auth.role };
   const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 
   res.status(200).json(
     new ApiResponse(200, "Login Successfull", {
       token,
-      admin: { email: admin.email, role: admin.role },
+      auth: { email: auth.email, role: auth.role },
     })
   );
 };
