@@ -1,53 +1,68 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const memberSchema = new mongoose.Schema({
+const farmerSchema = new mongoose.Schema({
   fullName: String,
-  aadharNo: String,
-  Area: String,
-  role: { type: String, enum: ['president', 'secretary', 'member'] },
+  aadhaarNo: String,
+  area: String,
+  role: {
+    type: String,
+    enum: ["president", "secretary", "member", "अध्यक्ष", "सचिव", "सदस्य"],
+  },
 });
 
 const projectSchema = new mongoose.Schema({ name: String });
 const farmerVisionSchema = new mongoose.Schema({ name: String });
 
-const formSchema = new mongoose.Schema({
-  registrationNo: { type: String, unique: true },
-  village_name: String,
-  group_name: String,
-  sub_district_name: String,
+const formSchema = new mongoose.Schema(
+  {
+    registrationNo: { type: String, unique: true },
+    village_name: String,
+    group_name: String,
+    sub_district_name: String,
 
-  members: [memberSchema],
+    farmers: [farmerSchema],
+    farmer_count: Number,
 
-  farmer_count: Number,
-  bank_name: String,
-  branch_name: String,
-  ifscCode: String,
-  accoutNo: String,
-  preparedBy: String,
-  approvedBy: String,
-  date: Date,
-  place: String,
+    bank_name: String,
+    branch_name: String,
 
-  project: [projectSchema],
-  FarmerVision: [farmerVisionSchema],
+    president_name: String,
+    secretary_name: String,
 
-  category: String,
-  gender: { type: String, enum: ['male', 'female', 'other'] },
-  disable: Boolean,
-  totalArea: Number,
-  gatNo: String,
-  cultivatedArea: Number,
-  horizontalArea: Number,
-  irigrationSource: String,
-  areaUnderOrganic: Number,
-  education: String,
-  noOfcattel: Number,
-  infrustructure: String,
-  mainCrops: String,
-  lattitude: Number,
-  logtitude: Number,
-  mention: String,
-}, { timestamps: true });
+    ifscCode: String,
+    accountNo: String,
 
-const Form = mongoose.model('Form', formSchema);
+    preparedBy: String,
+    approvedBy: String,
+
+    date: { type: Date, default: Date.now },
+    place: String,
+
+    project: [projectSchema],
+    farmerVision: [farmerVisionSchema],
+
+    aadhaarNo: String,
+    mobileNo: String,
+    category: String,
+    gender: { type: String, enum: ["male", "female", "पुरूष", "स्त्री"] },
+    disable: String,
+    totalArea: Number,
+    gatNo: String,
+    cultivatedArea: Number,
+    horizontalArea: Number,
+    irigrationSource: String,
+    areaUnderOrganic: Number,
+    education: String,
+    noofcattel: Number,
+    infrustructure: String,
+    mainCrops: String,
+    lattitude: Number,
+    logtitude: Number,
+    farmer_producer_company: String,
+    other_farmer_group: String,
+  },
+  { timestamps: true }
+);
+
+const Form = mongoose.model("Form", formSchema);
 export default Form;
